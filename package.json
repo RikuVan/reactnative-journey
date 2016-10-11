@@ -1,0 +1,29 @@
+{
+  "name": "artists",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "standard && node my-tests.js",
+    "lint": "standard --verbose | snazzy",
+    "fix": "standard --fix"
+  },
+  "dependencies": {
+    "axios": "^0.14.0",
+    "ramda": "^0.22.1",
+    "react": "15.3.2",
+    "react-native": "0.33.1",
+    "react-redux": "^4.4.5",
+    "redux": "^3.6.0",
+    "redux-saga": "^0.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.7.0",
+    "eslint-config-standard": "^6.2.0",
+    "eslint-config-standard-jsx": "^3.2.0",
+    "eslint-config-standard-react": "^4.2.0",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-react": "^6.3.0",
+    "eslint-plugin-standard": "^2.0.1"
+  }
+}
