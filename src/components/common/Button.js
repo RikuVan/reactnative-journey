@@ -1,14 +1,14 @@
 import React, {PropTypes} from 'react'
 import {Text, TouchableOpacity} from 'react-native'
 
-const Button = ({handlePress, children}) => {
-  const {button, btnText} = styles
+export const Button = ({handlePress, children, size}) => {
+  const {button, btnText, smallBtnText} = styles
   return (
     <TouchableOpacity
       onPress={handlePress}
       style={button}
     >
-      <Text style={btnText}>
+      <Text style={size === 'small' ? smallBtnText : btnText}>
         {children}
       </Text>
     </TouchableOpacity>
@@ -17,7 +17,6 @@ const Button = ({handlePress, children}) => {
 
 Button.propTypes = {
   handlePress: PropTypes.func.isRequired,
-  text: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired
 }
 
@@ -37,6 +36,14 @@ const styles = {
     color: '#007aff',
     paddingBottom: 10,
     paddingTop: 10
+  },
+  smallBtnText: {
+    alignSelf: 'center',
+    fontWeight: '600',
+    fontSize: 12,
+    color: '#007aff',
+    paddingBottom: 5,
+    paddingTop: 5
   }
 }
-export default Button
+

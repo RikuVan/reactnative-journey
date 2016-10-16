@@ -1,26 +1,41 @@
 import {
-  FETCH_TOP_ARTISTS_SUCCESS,
-  FETCH_TOP_ARTISTS,
-  FETCH_FAIL
+  FETCH_SUCCESS,
+  FETCH_FAIL,
+  BEGIN_ACTION,
+  COMPLETED_ACTION
 } from '../actions/api'
 
-export default (state = {}, action = {}) => {
+export default (state = {loading: {}, errors: null}, action = {}) => {
+  console.log(state, action)
   switch (action.type) {
-    case FETCH_TOP_ARTISTS:
-      return {
-        loading: true
-      }
-    case FETCH_TOP_ARTISTS_SUCCESS:
-      return {
+    case FETCH_SUCCESS: {
+      const newState = {
         ...state,
-        artists: action.payload.artists.artist,
-        loading: false
+        [action.payload.key]: {data: action.payload.data}
       }
-    case FETCH_FAIL:
-      return {
+      return newState
+    }
+    case FETCH_FAIL: {
+      const newState = {
         ...state,
-        error: action.error
+        errors: Object.assign({}, state.errors, {[action.payload.key]: {error: action.payload.error}})
       }
+      return newState
+    }
+    case BEGIN_ACTION: {
+      const newState = {
+        ...state,
+        loading: Object.assign({}, state.loading, {[action.key]: true})
+      }
+      return newState
+    }
+    case COMPLETED_ACTION: {
+      const newState = {
+        ...state,
+        loading: Object.assign({}, state.loading, {[action.key]: false})
+      }
+      return newState
+    }
     default:
       return state
   }

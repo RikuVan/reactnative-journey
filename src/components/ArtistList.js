@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Text, ScrollView} from 'react-native'
 import ArtistDetail from './ArtistDetail'
 import * as apiActions from '../actions/api'
-import {pathOr} from 'ramda';
+import {pathOr} from 'ramda'
 
 class AlbumList extends Component {
   componentWillMount () {
@@ -24,6 +24,6 @@ class AlbumList extends Component {
     )
   }
 }
-const mapStateToProps = state => ({artists: pathOr([], ['api', 'artists'], state)})
+const mapStateToProps = state => ({...state, artists: pathOr([], ['api', 'topArtists', 'data', 'artists', 'artist'], state)})
 
 export default connect(mapStateToProps, apiActions)(AlbumList)

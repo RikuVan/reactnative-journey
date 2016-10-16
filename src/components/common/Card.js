@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {View} from 'react-native'
 
-const Card = props => {
+export const Card = props => {
   return (
     <View style={styles.cardContainer}>
       {props.children}
@@ -30,4 +30,3 @@ const styles = {
   }
 }
 
-export default Card

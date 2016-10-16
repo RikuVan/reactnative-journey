@@ -1,8 +1,6 @@
 import React, {PropTypes} from 'react'
 import {View, Text, Image, Linking} from 'react-native'
-import Card from './Card'
-import CardSection from './CardSection'
-import Button from './Button'
+import {Card, Button, CardSection} from './common'
 import R from 'ramda'
 
 const ArtistDetail = ({artist, index}) => {
