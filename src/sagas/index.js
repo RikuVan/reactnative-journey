@@ -1,4 +1,4 @@
-import {takeLatest} from 'redux-saga'
+import {takeLatest, takeEvery} from 'redux-saga'
 import {loadArtists} from './artists'
 import {login, logout, watchAuthentication} from './auth'
 import {FETCH_TOP_ARTISTS} from '../actions/api'

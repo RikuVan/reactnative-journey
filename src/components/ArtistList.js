@@ -19,7 +19,7 @@ class AlbumList extends Component {
     const {artists} = this.props
     return (
       <ScrollView>
-        {artists.length > 0 ? this.renderArtists(artists) : <Text>Loading...</Text>}
+        {artists.length > 0 ? this.renderArtists(artists) : null}
       </ScrollView>
     )
   }

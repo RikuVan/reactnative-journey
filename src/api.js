@@ -25,4 +25,3 @@ export const apiDelete = apiFn('delete')
 export const firebaseApp = firebase.initializeApp(firebaseConfig)
 export const firebaseAuth = firebaseApp.auth()
 
-

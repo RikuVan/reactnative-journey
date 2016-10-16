@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux'
 import configureStore from './store'
 import rootSaga from './sagas'
 import {authorizeUser, logoutUser} from './actions/auth'
+import {beginAction} from './actions/api'
 import {View} from 'react-native'
 import {Header, Spinner} from './components/common'
 import ArtistList from './components/ArtistList'
@@ -18,23 +19,23 @@ class Main extends Component {
     this.handleLogout = this.handleLogout.bind(this)
   }
   componentWillMount () {
+    this.props.beginAction('getUser')
     this.props.authorizeUser()
   }
   handleLogout () {
     this.props.logoutUser()
   }
   renderBody () {
-    switch (this.props.loggedIn) {
-      case true:
-        return <ArtistList />
-      case false:
-        return <LoginForm />
-      default:
-        return <LoginForm />
+    if (Object.keys(this.props.loading).length > 0) {
+      return <Spinner />
+    } else if (this.props.loggedIn) {
+      return <ArtistList />
+    } else {
+      return <LoginForm />
     }
   }
   render () {
-    console.log("ehre", this.props)
+    console.log("auth", this.props.loggedIn)
     return (
       <View style={{flex: 1}}>
         <Header
@@ -48,7 +49,7 @@ class Main extends Component {
   }
 }
 
-const mapStateToProps = ({auth}) => ({...auth})
-const mapDispatchToProps = dispatch => bindActionCreators({authorizeUser, logoutUser}, dispatch)
+const mapStateToProps = ({auth, api}) => ({...auth, ...api})
+const mapDispatchToProps = dispatch => bindActionCreators({authorizeUser, logoutUser, beginAction}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main)

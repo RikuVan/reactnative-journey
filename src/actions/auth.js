@@ -2,6 +2,8 @@ export const LOGOUT_USER = 'auth/LOGOUT'
 export const LOGIN_USER = 'auth/LOGIN'
 export const LOGIN_USER_SUCCESS = 'auth/LOGIN_SUCCESS'
 export const LOGOUT_USER_SUCCESS = 'auth/LOGOUT_SUCCESS'
+export const LOGIN_USER_FAILURE = 'auth/LOGIN_FAILURE'
+export const LOGOUT_USER_FAILURE = 'auth/LOGOUT_FAILURE'
 export const AUTHORIZE_USER = 'auth/AUTHORIZE'
 
 export const logoutUser = () => ({type: LOGOUT_USER})

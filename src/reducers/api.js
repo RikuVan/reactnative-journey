@@ -1,12 +1,12 @@
 import {
   FETCH_SUCCESS,
   FETCH_FAIL,
-  BEGIN_ACTION,
-  COMPLETED_ACTION
+  API_ACTION_BEGIN,
+  API_ACTION_COMPLETE
 } from '../actions/api'
+import {merge, dissocPath} from 'ramda'
 
 export default (state = {loading: {}, errors: null}, action = {}) => {
-  console.log(state, action)
   switch (action.type) {
     case FETCH_SUCCESS: {
       const newState = {
@@ -18,23 +18,19 @@ export default (state = {loading: {}, errors: null}, action = {}) => {
     case FETCH_FAIL: {
       const newState = {
         ...state,
-        errors: Object.assign({}, state.errors, {[action.payload.key]: {error: action.payload.error}})
+        errors: merge(state.errors, {[action.payload.key]: action.payload.error})
       }
       return newState
     }
-    case BEGIN_ACTION: {
+    case API_ACTION_BEGIN: {
       const newState = {
         ...state,
-        loading: Object.assign({}, state.loading, {[action.key]: true})
+        loading: merge(state.loading, {[action.key]: true})
       }
       return newState
     }
-    case COMPLETED_ACTION: {
-      const newState = {
-        ...state,
-        loading: Object.assign({}, state.loading, {[action.key]: false})
-      }
-      return newState
+    case API_ACTION_COMPLETE: {
+      return dissocPath(['loading', action.key], state)
     }
     default:
       return state

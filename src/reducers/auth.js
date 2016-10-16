@@ -1,16 +1,22 @@
 import {
   LOGOUT_USER_SUCCESS,
-  LOGIN_USER_SUCCESS
+  LOGIN_USER_SUCCESS,
+  LOGOUT_USER_FAILURE,
+  LOGIN_USER_FAILURE
 } from '../actions/auth'
+import {evolve, __} from 'ramda'
 
 const defaultState = {
-  loggedIn: null,
+  loggedIn: false,
   uid: null,
   email: null,
-  user: null
+  user: null,
+  error: null,
 }
+const getErrorState = error => evolve(__, defaultState)({error})
 
 export default (state = defaultState, action = {}) => {
+  console.log(state, action)
   switch (action.type) {
     case LOGIN_USER_SUCCESS:
       return {
@@ -23,10 +29,17 @@ export default (state = defaultState, action = {}) => {
     case LOGOUT_USER_SUCCESS:
       return {
         ...state,
-        loggedIn: false,
-        uid: null,
-        email: null,
-        user: null
+        ...defaultState
+      }
+    case LOGIN_USER_FAILURE:
+      return {
+        ...state,
+        ...getErrorState(action.error)
+      }
+    case LOGOUT_USER_FAILURE:
+      return {
+        ...state,
+        ...getErrorState(action.error)
       }
     default:
       return state

@@ -8,7 +8,7 @@ const ArtistDetail = ({artist, index}) => {
     thumbnail,
     headerContent,
     thumbNailContainer,
-    thumbnailText,
+    thumbnailText
   } = styles
   return (
     <Card>

@@ -8,7 +8,7 @@ export const LabeledInput = (
    placeholder,
    secure
   }) => {
-  const {inputStyle, labelStyle, containerStyle} = styles;
+  const {inputStyle, labelStyle, containerStyle} = styles
   return (
     <View style={containerStyle}>
       <Text style={labelStyle}>{label}</Text>
