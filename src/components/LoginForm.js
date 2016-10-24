@@ -28,8 +28,9 @@ class LoginForm extends Component {
   }
   onButtonPress () {
     const {email, password} = this.state
+    const key = 'loginUser'
     this.setState({error: '', loading: true})
-    this.props.loginUser(email, password)
+    this.props.loginUser(key, email, password)
       /*
       .catch(() => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -38,7 +39,6 @@ class LoginForm extends Component {
       }) */
   }
   render () {
-    console.log(this.props)
     return (
       <Card>
         <CardSection>
@@ -59,7 +59,7 @@ class LoginForm extends Component {
           />
         </CardSection>
         <Text style={styles.errorText}>
-          {this.props.errors}
+          {this.props.error}
         </Text>
         <CardSection>
           {!this.props.loading.user
@@ -71,6 +71,12 @@ class LoginForm extends Component {
       </Card>
     )
   }
+}
+
+LoginForm.propTypes = {
+  loading: PropTypes.object.isRequired,
+  error: PropTypes.string,
+  loginUser: PropTypes.func.isRequired
 }
 
 const styles = {

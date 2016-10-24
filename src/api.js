@@ -2,12 +2,17 @@ import axios from 'axios'
 import firebase from 'firebase'
 import {lastFMConfig, firebaseConfig} from './config'
 const {LFM_USER, API_KEY, ROOT_URL} = lastFMConfig
+import {compose, join, split} from 'ramda'
+
+const replaceSpaces = compose(join('+'), split(' '))
 
 const queryMap = {
-  top: 'chart.gettopartists'
+  top: () => 'chart.gettoptracks',
+  artist: ({artist}) => `artist.getinfo&artist=${artist}`,
+  similar: ({artist, track}) => `track.getsimilar&artist=${replaceSpaces(artist)}&track=${replaceSpaces(track)}`
 }
 export const api = {
-  artists: query => `${ROOT_URL}?method=${queryMap[query]}&user=${LFM_USER}&api_key=${API_KEY}&format=json`
+  tracks: (query, params) => `${ROOT_URL}?method=${queryMap[query](params)}&user=${LFM_USER}&api_key=${API_KEY}&format=json`
 }
 
 export const apiFn = type => (url, payload) => {

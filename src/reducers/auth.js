@@ -11,12 +11,11 @@ const defaultState = {
   uid: null,
   email: null,
   user: null,
-  error: null,
+  error: null
 }
 const getErrorState = error => evolve(__, defaultState)({error})
 
 export default (state = defaultState, action = {}) => {
-  console.log(state, action)
   switch (action.type) {
     case LOGIN_USER_SUCCESS:
       return {
@@ -34,12 +33,12 @@ export default (state = defaultState, action = {}) => {
     case LOGIN_USER_FAILURE:
       return {
         ...state,
-        ...getErrorState(action.error)
+        ...getErrorState(action.payload.error)
       }
     case LOGOUT_USER_FAILURE:
       return {
         ...state,
-        ...getErrorState(action.error)
+        ...getErrorState(action.payload.error)
       }
     default:
       return state

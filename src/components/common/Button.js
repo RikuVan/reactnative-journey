@@ -17,7 +17,8 @@ export const Button = ({handlePress, children, size}) => {
 
 Button.propTypes = {
   handlePress: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  size: PropTypes.string
 }
 
 const styles = {

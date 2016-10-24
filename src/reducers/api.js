@@ -25,12 +25,12 @@ export default (state = {loading: {}, errors: null}, action = {}) => {
     case API_ACTION_BEGIN: {
       const newState = {
         ...state,
-        loading: merge(state.loading, {[action.key]: true})
+        loading: merge(state.loading, {[action.payload.key]: true})
       }
       return newState
     }
     case API_ACTION_COMPLETE: {
-      return dissocPath(['loading', action.key], state)
+      return dissocPath(['loading', action.payload.key], state)
     }
     default:
       return state

@@ -7,7 +7,7 @@ export const LOGOUT_USER_FAILURE = 'auth/LOGOUT_FAILURE'
 export const AUTHORIZE_USER = 'auth/AUTHORIZE'
 
 export const logoutUser = () => ({type: LOGOUT_USER})
-export const loginUser = (email, password) => ({type: LOGIN_USER, email, password})
-export const loginUserSuccess = user => ({type: LOGIN_USER_SUCCESS, payload: user})
-export const authorizeUser = () => ({type: AUTHORIZE_USER})
+export const loginUser = (key, email, password) => ({type: LOGIN_USER, payload: {key, email, password}})
+export const loginUserSuccess = (key, user) => ({type: LOGIN_USER_SUCCESS, payload: {key, user}})
+export const authorizeUser = (key, error) => ({type: AUTHORIZE_USER, payload: {key, error}})
 
