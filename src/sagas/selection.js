@@ -1,15 +1,16 @@
-import {loadArtistInfo, loadSimilarTracks} from './tracks'
+import {loadArtistInfo, loadSimilarTracks, getArtistKey, getTrackKey} from './tracks'
 import {fork, select} from 'redux-saga/effects'
-import {path} from 'ramda'
-import {createTrackId} from '../reducers/selection'
-const getSelectionById = id => path(['api', id, 'data'])
+import {getSelectionById} from '../selectors/selection'
 
 export function* selectItem ({payload}) {
   const {track, artist} = payload
-  const idExists = yield select(getSelectionById(createTrackId(artist, track)))
-  if (!idExists) {
-    yield fork(loadArtistInfo, artist)
+  const trackIdExists = yield select(getSelectionById(getTrackKey(track)))
+  const artistIdExists = yield select(getSelectionById(getArtistKey(artist)))
+  if (!trackIdExists) {
     yield fork(loadSimilarTracks, track, artist)
   }
-  return
+  if (!artistIdExists) {
+    yield fork(loadArtistInfo, artist)
+  }
 }
+

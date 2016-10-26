@@ -24,15 +24,10 @@ class Main extends Component {
     this.props.logoutUser()
   }
   renderBody () {
-    if (this.props.loading.getUser) {
-      return <Spinner />
-    } else if (this.props.loggedIn) {
-      return <TrackList />
-    } else {
-      return <LoginForm />
-    }
+    return <LoginForm />
   }
   render () {
+    console.log("here", this.props)
     return (
       <View style={{flex: 1}}>
         <Header

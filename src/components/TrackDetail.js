@@ -1,12 +1,17 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {View, Text, Image, TouchableWithoutFeedback} from 'react-native'
+import {View, Text, Image, TouchableWithoutFeedback, LayoutAnimation} from 'react-native'
 import {CardSection, Spinner} from './common'
-import {compose, propOr, path, inc, pathOr, merge} from 'ramda'
+import {compose, propOr, path, inc, merge} from 'ramda'
 import * as selectActions from '../actions/selection'
 import {createTrackId, replaceSpacesWithUnderscores} from '../reducers/selection'
+import {getSimilarTracks, getArtistInfo} from '../selectors/tracks'
 
 class TrackDetail extends Component {
+
+  componentWillUpdate () {
+    LayoutAnimation.spring()
+  }
 
   render () {
     const {
@@ -21,8 +26,10 @@ class TrackDetail extends Component {
       thumbnail,
       headerContent,
       thumbNailContainer,
-      thumbnailText
+      thumbnailText,
+      artistName
     } = styles
+    console.log(loading, this.props)
     return (
       <TouchableWithoutFeedback
         onPress={() => toggleSelection(track.name, track.artist.name)}
@@ -40,7 +47,15 @@ class TrackDetail extends Component {
           </CardSection>
           {selected &&
             <View>
-              {loading ? <Spinner size="small" /> : <Text>Info: {artistInfo && artistInfo.name}</Text>}
+              {loading
+                ? <View style={{padding: 10}}>
+                  <Spinner size='small' />
+                </View>
+                : <CardSection direction='column'>
+                  <Text style={artistName}>Artist: {artistInfo && artistInfo.name}</Text>
+                  <Text style={{flex: 1}}>{artistInfo && artistInfo.bio.content}</Text>
+                </CardSection>
+              }
             </View>}
         </View>
       </TouchableWithoutFeedback>
@@ -63,6 +78,11 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'space-around',
     paddingLeft: 10
+  },
+  artistName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    alignItems: 'center'
   },
   thumbNailContainer: {
     justifyContent: 'center',
@@ -90,8 +110,8 @@ const mapStateToProps = (state, ownProps) => {
   }
   if (state.selected !== id) return props
   return merge(props, {
-    artistInfo: pathOr(null, ['api', `${artistId}_info`, 'data', 'artist'], state),
-    similarTracks: pathOr(null, ['api', `${trackId}_similar`, 'data', 'similartracks'], state),
+    artistInfo: getArtistInfo(artistId)(state),
+    similarTracks: getSimilarTracks(trackId)(state),
     loading: path(['api', 'loading', `${artistId}_info`], state) || path(['api', 'loading', `${trackId}_similar`], state)
   })
 }

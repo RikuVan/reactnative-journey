@@ -1,8 +1,14 @@
 import React from 'react'
 import {View} from 'react-native'
 
-export const CardSection = ({children}) =>
-  <View style={styles.section}>{children}</View>
+export const CardSection = ({children, direction}) => {
+  const {section, directionRow: dr, directionCol: dc} = styles
+  return (
+    <View style={[section, direction === 'column' ? dc : dr]}>
+      {children}
+    </View>
+  )
+}
 
 const styles = {
   section: {
@@ -10,9 +16,14 @@ const styles = {
     padding: 5,
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
-    flexDirection: 'row',
     borderColor: '#ddd',
     position: 'relative'
+  },
+  directionRow: {
+    flexDirection: 'row',
+  },
+  directionCol: {
+    flexDirection: 'column'
   }
 }
 

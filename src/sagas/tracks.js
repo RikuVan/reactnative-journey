@@ -13,13 +13,14 @@ import {
   LOGIN_USER_FAILURE,
   LOGIN_USER
 } from '../actions/auth'
-import {call, put, take} from 'redux-saga/effects'
+import {call, put, take, select} from 'redux-saga/effects'
 import {api, apiGet} from '../api'
 import {replaceSpacesWithUnderscores} from '../reducers/selection'
 import {SELECT_TRACK} from '../actions/selection'
+import {getSelectionById} from '../selectors/selection'
 
-const getArtistKey = artist => `${replaceSpacesWithUnderscores(artist)}_info`
-const getTrackKey = track => `${replaceSpacesWithUnderscores(track)}_similar`
+export const getArtistKey = artist => `${replaceSpacesWithUnderscores(artist)}_info`
+export const getTrackKey = track => `${replaceSpacesWithUnderscores(track)}_similar`
 
 const beginAPiActionsWithKeys = [AUTHORIZE_USER, LOGIN_USER, FETCH_TOP_TRACKS]
 const completionApiActionsWithKeys = [FETCH_SUCCESS, FETCH_FAIL, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE]
@@ -33,13 +34,15 @@ export function* watchLoading () {
     if (action.type === SELECT_TRACK) {
       const trackKey = getTrackKey(action.payload.track)
       const artistKey = getArtistKey(action.payload.artist)
+      const trackIdExists = yield select(getSelectionById(trackKey))
+      const artistIdExists = yield select(getSelectionById(artistKey))
       yield [
-        put(beginAction(trackKey)),
-        put(beginAction(artistKey))
+        trackIdExists ? null : put(beginAction(trackKey)),
+        artistIdExists ? null : put(beginAction(artistKey))
       ]
     }
     if (completionApiActionsWithKeys.includes(action.type)) {
-      yield put(completeAction(action.payload.key))
+      yield put(completeAction(action.key || action.payload.key))
     }
   }
 }

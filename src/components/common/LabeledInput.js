@@ -1,24 +1,27 @@
 import React from 'react'
 import {TextInput, View, Text} from 'react-native'
 
-export const LabeledInput = (
-  {label,
-   value,
-   onChangeText,
-   placeholder,
-   secure
-  }) => {
-  const {inputStyle, labelStyle, containerStyle} = styles
+export const LabeledInput = props => {
+  const {inputStyle, labelStyle, containerStyle, errorStyle} = styles
+  const {
+    label,
+    placeholder,
+    disguise,
+    input: {onChange, value},
+    meta: {error}
+  } = props
+  const displayError = value.length > 0 && error
   return (
-    <View style={containerStyle}>
+    <View style={[containerStyle, displayError && errorStyle]}>
       <Text style={labelStyle}>{label}</Text>
       <TextInput
         placeholder={placeholder}
-        value={value}
         style={inputStyle}
-        onChangeText={onChangeText}
+        value={value}
+        onChangeText={value => onChange(value)}
         autoCorrect={false}
-        secureTextEntry={secure}
+        secureTextEntry={disguise}
+        selectTextOnFocus
       />
     </View>
   )
@@ -43,5 +46,9 @@ const styles = {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  errorStyle: {
+    borderColor: 'gold',
+    borderWidth: 1
   }
 }

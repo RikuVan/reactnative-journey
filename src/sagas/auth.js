@@ -4,13 +4,13 @@ import {
   LOGIN_USER_FAILURE,
   LOGOUT_USER_FAILURE
 } from '../actions/auth'
-import {beginAction, completeAction} from '../actions/api'
 import {firebaseAuth} from '../api'
 import {call, put, take} from 'redux-saga/effects'
 import {eventChannel} from 'redux-saga'
 import {isEmpty} from 'ramda'
 
-export function* login ({key, email, password}) {
+export function* login ({payload}) {
+  const {key, email, password} = payload
   try {
     const user = yield call([firebaseAuth, firebaseAuth.signInWithEmailAndPassword], email, password)
     if (user) {
@@ -57,8 +57,6 @@ export function* watchAuthentication () {
     } catch (error) {
       yield put({type: LOGOUT_USER_FAILURE, payload: {error}})
       return null
-    } finally {
-      yield put(completeAction('getUser'))
     }
   }
 }

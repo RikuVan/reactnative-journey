@@ -4,9 +4,9 @@ import {
   API_ACTION_BEGIN,
   API_ACTION_COMPLETE
 } from '../actions/api'
-import {merge, dissocPath} from 'ramda'
+import {merge, assocPath} from 'ramda'
 
-export default (state = {loading: {}, errors: null}, action = {}) => {
+export default (state = {loading: {}, errors: {}}, action = {}) => {
   switch (action.type) {
     case FETCH_SUCCESS: {
       const newState = {
@@ -30,7 +30,7 @@ export default (state = {loading: {}, errors: null}, action = {}) => {
       return newState
     }
     case API_ACTION_COMPLETE: {
-      return dissocPath(['loading', action.payload.key], state)
+      return assocPath(['loading', action.payload.key], false, state)
     }
     default:
       return state

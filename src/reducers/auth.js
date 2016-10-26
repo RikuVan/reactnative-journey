@@ -4,7 +4,7 @@ import {
   LOGOUT_USER_FAILURE,
   LOGIN_USER_FAILURE
 } from '../actions/auth'
-import {evolve, __} from 'ramda'
+import {evolve, __, pick} from 'ramda'
 
 const defaultState = {
   loggedIn: false,
@@ -21,9 +21,8 @@ export default (state = defaultState, action = {}) => {
       return {
         ...state,
         loggedIn: true,
-        uid: action.payload.uid,
-        email: action.payload.email,
-        user: action.payload
+        user: action.payload.user,
+        ...pick(['uid', 'email'], action.payload.user)
       }
     case LOGOUT_USER_SUCCESS:
       return {
