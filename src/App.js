@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Provider} from 'react-redux'
-import Main from './Main'
+import Router from './Router'
 
 import configureStore from './store'
 import rootSaga from './sagas'
@@ -12,7 +12,7 @@ class App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <Main />
+        <Router />
       </Provider>
     )
   }

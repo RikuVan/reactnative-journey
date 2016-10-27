@@ -1,10 +1,10 @@
 import React from 'react'
 import {View} from 'react-native'
 
-export const CardSection = ({children, direction}) => {
+export const CardSection = ({children, direction, style}) => {
   const {section, directionRow: dr, directionCol: dc} = styles
   return (
-    <View style={[section, direction === 'column' ? dc : dr]}>
+    <View style={[section, direction === 'column' ? dc : dr, style]}>
       {children}
     </View>
   )
@@ -20,7 +20,7 @@ const styles = {
     position: 'relative'
   },
   directionRow: {
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   directionCol: {
     flexDirection: 'column'

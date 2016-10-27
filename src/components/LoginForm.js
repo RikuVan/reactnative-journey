@@ -1,12 +1,11 @@
 import React, {Component, PropTypes} from 'react'
 import {reduxForm, Field} from 'redux-form'
-import {onSubmitActions} from 'redux-form-submit-saga';
 import {Text} from 'react-native'
 import {connect} from 'react-redux'
 import {loginUser} from '../actions/auth'
 import {Card, Button, CardSection, LabeledInput, Spinner} from './common'
 import {getEmail, getPassword, getValidity} from '../selectors/form'
-import {getUserLoggingIn} from '../selectors/auth'
+import {getUserLoggingIn, getUserLoginError} from '../selectors/auth'
 import {getUserError} from '../selectors/api'
 import {isEmpty} from 'ramda'
 
@@ -37,7 +36,6 @@ class LoginForm extends Component {
 
   render () {
     const {loadingUser, error, invalid, email, password} = this.props
-    console.log(this.props)
     return (
       <Card>
         <CardSection>
@@ -55,10 +53,6 @@ class LoginForm extends Component {
             disguise
           />
         </CardSection>
-        {!isEmpty(error) &&
-          <Text style={styles.errorText}>
-            {userError.error}
-          </Text>}
         <CardSection>
           {!loadingUser
           ? <Button handlePress={() => this.onSubmit(email, password)} disabled={invalid}>
@@ -66,6 +60,10 @@ class LoginForm extends Component {
           </Button>
           : <Spinner size='small' />}
         </CardSection>
+        {error &&
+        <Text style={styles.errorText}>
+          {error}
+        </Text>}
       </Card>
     )
   }
@@ -81,16 +79,18 @@ LoginForm.propTypes = {
 
 const styles = {
   errorText: {
-    fontSize: 20,
+    fontSize: 16,
     color: 'red',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginLeft: 2,
+    marginRight: 2
   }
 }
 
 const mapDispatchToProps = state =>
   ({
     loadingUser: getUserLoggingIn(state),
-    error: getUserError(state),
+    error: getUserLoginError(state),
     email: getEmail(state),
     password: getPassword(state),
     ...state

@@ -8,29 +8,37 @@ import {firebaseAuth} from '../api'
 import {call, put, take} from 'redux-saga/effects'
 import {eventChannel} from 'redux-saga'
 import {isEmpty} from 'ramda'
+import {Actions} from 'react-native-router-flux'
 
 export function* login ({payload}) {
   const {key, email, password} = payload
   try {
     const user = yield call([firebaseAuth, firebaseAuth.signInWithEmailAndPassword], email, password)
     if (user) {
-      yield put({type: LOGIN_USER_SUCCESS, payload: {key, user}})
+      yield [
+        put({type: LOGIN_USER_SUCCESS, payload: {key, user}}),
+        call(Actions.main)
+      ]
       return user
     }
   } catch (error) {
-    yield put({type: LOGIN_USER_FAILURE, payload: {error}})
-    return null
+    const {message} = error
+    yield put({type: LOGIN_USER_FAILURE, payload: {key, error: message}})
+    return error
   }
 }
 
 export function* logout () {
   try {
     yield call([firebaseAuth, firebaseAuth.signOut])
-    yield put({type: LOGOUT_USER_SUCCESS})
+    yield [
+      put({type: LOGOUT_USER_SUCCESS}),
+      call(Actions.auth)
+    ]
     return null
   } catch (error) {
     yield put({type: LOGOUT_USER_FAILURE, payload: {error}})
-    return null
+    return error
   }
 }
 
@@ -47,16 +55,22 @@ export function* watchAuthentication () {
         yield put({type: LOGIN_USER_SUCCESS, payload: {key: 'getUser', user}})
         return user
       } catch (error) {
-        yield put({type: LOGIN_USER_FAILURE, payload: {error}})
-        return null
+        yield [
+          put({type: LOGIN_USER_FAILURE, payload: {error}}),
+          call(Actions.auth)
+        ]
+        return error
       }
     }
     try {
-      yield put({type: LOGOUT_USER_SUCCESS})
+      yield [
+        put({type: LOGOUT_USER_SUCCESS}),
+        call(Actions.auth)
+      ]
       return null
     } catch (error) {
       yield put({type: LOGOUT_USER_FAILURE, payload: {error}})
-      return null
+      return error
     }
   }
 }

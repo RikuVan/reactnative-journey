@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import configureStore from './store'
-import rootSaga from './sagas'
 import {authorizeUser, logoutUser} from './actions/auth'
 import {View} from 'react-native'
 import {Header, Spinner} from './components/common'
-import TrackList from './components/TrackList'
 import LoginForm from './components/LoginForm'
-
-const store = configureStore({})
-store.runSaga(rootSaga)
 
 class Main extends Component {
   constructor () {
@@ -27,7 +21,6 @@ class Main extends Component {
     return <LoginForm />
   }
   render () {
-    console.log("here", this.props)
     return (
       <View style={{flex: 1}}>
         <Header

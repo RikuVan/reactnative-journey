@@ -8,7 +8,8 @@ export const LabeledInput = props => {
     placeholder,
     disguise,
     input: {onChange, value},
-    meta: {error}
+    meta: {error},
+    multiline = true
   } = props
   const displayError = value.length > 0 && error
   return (
@@ -21,6 +22,7 @@ export const LabeledInput = props => {
         onChangeText={value => onChange(value)}
         autoCorrect={false}
         secureTextEntry={disguise}
+        multiline={multiline}
         selectTextOnFocus
       />
     </View>
@@ -42,6 +44,7 @@ const styles = {
     flex: 1
   },
   containerStyle: {
+    padding: 5,
     height: 40,
     flex: 1,
     flexDirection: 'row',
@@ -49,6 +52,6 @@ const styles = {
   },
   errorStyle: {
     borderColor: 'gold',
-    borderWidth: 1
+    borderBottomWidth: 2
   }
 }

@@ -29,7 +29,7 @@ class TrackDetail extends Component {
       thumbnailText,
       artistName
     } = styles
-    console.log(loading, this.props)
+    console.log(this.props)
     return (
       <TouchableWithoutFeedback
         onPress={() => toggleSelection(track.name, track.artist.name)}
@@ -112,7 +112,8 @@ const mapStateToProps = (state, ownProps) => {
   return merge(props, {
     artistInfo: getArtistInfo(artistId)(state),
     similarTracks: getSimilarTracks(trackId)(state),
-    loading: path(['api', 'loading', `${artistId}_info`], state) || path(['api', 'loading', `${trackId}_similar`], state)
+    loading: path(['api', 'loading', `${artistId}_info`], state) || path(['api', 'loading', `${trackId}_similar`], state),
+    testing: state
   })
 }
 

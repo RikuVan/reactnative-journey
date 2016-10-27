@@ -1,63 +1,27 @@
 import {
   fetchFail,
-  fetchSuccess,
-  beginAction,
-  completeAction,
-  FETCH_SUCCESS,
-  FETCH_FAIL,
-  FETCH_TOP_TRACKS
+  fetchSuccess
 } from '../actions/api'
-import {
-  AUTHORIZE_USER,
-  LOGIN_USER_SUCCESS,
-  LOGIN_USER_FAILURE,
-  LOGIN_USER
-} from '../actions/auth'
-import {call, put, take, select} from 'redux-saga/effects'
-import {api, apiGet} from '../api'
-import {replaceSpacesWithUnderscores} from '../reducers/selection'
-import {SELECT_TRACK} from '../actions/selection'
-import {getSelectionById} from '../selectors/selection'
+import {FETCH_TOP_TRACKS, FETCH_TRACK} from '../actions/tracks'
+import {call, put, take} from 'redux-saga/effects'
+import {api, apiGet, selectionsAPI} from '../api'
 
-export const getArtistKey = artist => `${replaceSpacesWithUnderscores(artist)}_info`
-export const getTrackKey = track => `${replaceSpacesWithUnderscores(track)}_similar`
-
-const beginAPiActionsWithKeys = [AUTHORIZE_USER, LOGIN_USER, FETCH_TOP_TRACKS]
-const completionApiActionsWithKeys = [FETCH_SUCCESS, FETCH_FAIL, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE]
-
-export function* watchLoading () {
-  while (true) {
-    const action = yield take('*')
-    if (beginAPiActionsWithKeys.includes(action.type)) {
-      yield put(beginAction(action.key || action.payload.key))
-    }
-    if (action.type === SELECT_TRACK) {
-      const trackKey = getTrackKey(action.payload.track)
-      const artistKey = getArtistKey(action.payload.artist)
-      const trackIdExists = yield select(getSelectionById(trackKey))
-      const artistIdExists = yield select(getSelectionById(artistKey))
-      yield [
-        trackIdExists ? null : put(beginAction(trackKey)),
-        artistIdExists ? null : put(beginAction(artistKey))
-      ]
-    }
-    if (completionApiActionsWithKeys.includes(action.type)) {
-      yield put(completeAction(action.key || action.payload.key))
-    }
-  }
-}
-
-export function* loadTracks ({payload}) {
+function* attemptRequest (actionType, apiFn, url) {
+  const {payload} = yield take(actionType)
+  let {key, ...rest} = payload
+  const requestWithParams = url(rest)
   try {
-    const tracks = yield call(apiGet, api.tracks('top'))
-    yield put(fetchSuccess(payload.key, tracks.data))
+    const response = yield call(apiFn, requestWithParams)
+    yield put(fetchSuccess(key, response.data))
   } catch (error) {
-    yield put(fetchFail(payload.key, error))
+    yield put(fetchFail(key, error))
   }
 }
 
-export function* loadArtistInfo (artist) {
-  const key = getArtistKey(artist)
+export const loadTracks = attemptRequest.bind(null, FETCH_TOP_TRACKS, apiGet, api.tracks('top'))
+export const loadTrack = attemptRequest.bind(null, FETCH_TRACK, apiGet, api.tracks('searchByName'))
+
+export function* loadArtistInfo (key, artist) {
   try {
     const artistInfo = yield call(apiGet, api.tracks('artist', {artist}))
     yield put(fetchSuccess(key, artistInfo.data))
@@ -66,11 +30,20 @@ export function* loadArtistInfo (artist) {
   }
 }
 
-export function* loadSimilarTracks (track, artist) {
-  const key = getTrackKey(track)
+export function* loadSimilarTracks (key, track, artist) {
   try {
     const similarTracks = yield call(apiGet, api.tracks('similar', {track, artist}))
     yield put(fetchSuccess(key, similarTracks.data))
+  } catch (error) {
+    yield put(fetchFail(key, error))
+  }
+}
+
+export function* saveTrackSuggestion ({payload}) {
+  const {key, mbid, suggestedBy, comment} = payload
+  try {
+    const saved = yield call([selectionsAPI, selectionsAPI.push], {mbid, comment, suggestedBy})
+    yield put(fetchSuccess(key, saved.data))
   } catch (error) {
     yield put(fetchFail(key, error))
   }

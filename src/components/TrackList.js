@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {ListView} from 'react-native'
 import TrackDetail from './TrackDetail'
 import {Spinner} from './common'
-import * as apiActions from '../actions/api'
+import * as trackActions from '../actions/tracks'
 import {pathOr, equals} from 'ramda'
 import {getTracks} from '../selectors/tracks'
 
@@ -54,4 +54,4 @@ const mapStateToProps = state => ({
   tracks: getTracks(state)
 })
 
-export default connect(mapStateToProps, apiActions)(AlbumList)
+export default connect(mapStateToProps, trackActions)(AlbumList)
