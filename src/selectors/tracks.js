@@ -10,11 +10,7 @@ export const getTrackName = pathOr('', trackSuggestionPath.concat('track'))
 export const getArtist = pathOr('', trackSuggestionPath.concat('artist'))
 export const getTrackIdFromList = pathOr(null, trackSuggestionPath.concat('trackFromList'))
 export const getComment = pathOr('', trackSuggestionPath.concat('comment'))
-const log = v => {
-  console.log("logging", v)
-  return v
-}
-export const getDefaultTrackIdFromList = compose(log, prop('mbid'), head, defaultTo([{mbid: null}]), log, getTrackMatches)
+export const getDefaultTrackIdFromList = compose(prop('mbid'), head, defaultTo([{mbid: null}]), getTrackMatches)
 
 
 

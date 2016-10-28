@@ -28,7 +28,6 @@ const validate = values => {
 class LoginForm extends Component {
 
   onSubmit = (email, password) => {
-    console.log("login", email, password)
     const key = 'loginUser'
     this.props.loginUser(key, email, password)
     this.props.reset()

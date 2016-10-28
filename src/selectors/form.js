@@ -1,4 +1,6 @@
 import {pathOr} from 'ramda'
-export const getPassword = pathOr('', ['form', 'login', 'values', 'password'])
-export const getEmail = pathOr('', ['form', 'login', 'values', 'email'])
+
+const loginFormPath =  ['form', 'login', 'values']
+export const getPassword = pathOr('', loginFormPath.concat('password'))
+export const getEmail = pathOr('', loginFormPath.concat('email'))
 export const getValidity = pathOr(true, ['form', 'invalid'])

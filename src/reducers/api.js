@@ -7,7 +7,6 @@ import {
 import {merge, assocPath} from 'ramda'
 
 export default (state = {loading: {}, errors: {}}, action = {}) => {
-  console.log(action)
   switch (action.type) {
     case FETCH_SUCCESS: {
       const newState = {

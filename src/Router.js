@@ -9,14 +9,14 @@ const RouterComponent = () => {
   return (
     <Router sceneStyle={{paddingTop: 65}}>
       <Scene key='auth'>
-        <Scene key='login' component={LoginForm} title="Julia's Ballet" />
+        <Scene key='login' component={LoginForm} title="Julia's Tracks" />
       </Scene>
       <Scene key='main' initial>
         <Scene
           key='trackList'
           component={requireAuth(TrackList)}
           title="Julia's tracks"
-          rightTitle='+'
+          rightTitle='Suggest'
           onRight={() => Actions.trackSuggestion()}
           initial />
         <Scene

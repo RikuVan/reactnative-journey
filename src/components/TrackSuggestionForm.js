@@ -37,7 +37,6 @@ class TrackSuggestionForm extends Component {
 
   render () {
     const {trackMatches, trackFromList} = this.props;
-    console.log(trackFromList, this.props)
     return (
       <Card style={{flex: 1}}>
         {!trackMatches &&

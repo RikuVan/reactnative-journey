@@ -17,7 +17,6 @@ export const api = {
 }
 
 export const apiFn = type => (url, payload) => {
-  console.log("Called", type, url, payload)
   let reqFn = () => axios[type](url)
   if (type === 'post' || type === 'put') {
     reqFn = () => axios[type](url, payload)
