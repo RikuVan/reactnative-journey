@@ -1,11 +1,7 @@
 import {loadArtistInfo, loadSimilarTracks} from './tracks'
 import {fork, select} from 'redux-saga/effects'
 import {getSelectionById} from '../selectors/selection'
-
-import {replaceSpacesWithUnderscores} from '../reducers/selection'
-
-export const getArtistKey = artist => `${replaceSpacesWithUnderscores(artist)}_info`
-export const getTrackKey = track => `${replaceSpacesWithUnderscores(track)}_similar`
+import {getArtistKey, getTrackKey} from './helpers'
 
 export function* selectItem ({payload}) {
   const {track, artist} = payload

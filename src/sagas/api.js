@@ -14,7 +14,7 @@ import {
 } from '../actions/auth'
 import {SELECT_TRACK} from '../actions/selection'
 import {getSelectionById} from '../selectors/selection'
-import {getArtistKey, getTrackKey} from './selection'
+import {getArtistKey, getTrackKey} from './helpers'
 
 const beginAPiActionsWithKeys = [AUTHORIZE_USER, LOGIN_USER, FETCH_TOP_TRACKS, FETCH_TRACK]
 const completionApiActionsWithKeys = [FETCH_SUCCESS, FETCH_FAIL, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE]

@@ -4,7 +4,8 @@ import {
   API_ACTION_BEGIN,
   API_ACTION_COMPLETE
 } from '../actions/api'
-import {merge, assocPath} from 'ramda'
+import {CLEAR_SUGGESTED_TRACK} from '../actions/tracks'
+import {merge, assocPath, dissocPath} from 'ramda'
 
 export default (state = {loading: {}, errors: {}}, action = {}) => {
   switch (action.type) {
@@ -33,6 +34,8 @@ export default (state = {loading: {}, errors: {}}, action = {}) => {
     case API_ACTION_COMPLETE: {
       return assocPath(['loading', action.payload.key], false, state)
     }
+    case CLEAR_SUGGESTED_TRACK:
+      return dissocPath([action.payload.key], state)
     default:
       return state
   }

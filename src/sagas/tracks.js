@@ -2,9 +2,12 @@ import {
   fetchFail,
   fetchSuccess
 } from '../actions/api'
-import {FETCH_TOP_TRACKS, FETCH_TRACK} from '../actions/tracks'
+import {FETCH_TOP_TRACKS, FETCH_TRACK, FETCH_TRACK_BY_ID} from '../actions/tracks'
 import {call, put, take} from 'redux-saga/effects'
 import {api, apiGet, selectionsAPI} from '../api'
+import {eventChannel} from 'redux-saga'
+import {isEmpty, map, compose, keys} from 'ramda'
+import {normalizeTracks} from './helpers'
 
 function* attemptRequest (actionType, apiFn, url) {
   const {payload} = yield take(actionType)
@@ -19,7 +22,8 @@ function* attemptRequest (actionType, apiFn, url) {
 }
 
 export const loadTracks = attemptRequest.bind(null, FETCH_TOP_TRACKS, apiGet, api.tracks('top'))
-export const loadTrack = attemptRequest.bind(null, FETCH_TRACK, apiGet, api.tracks('searchByName'))
+export const loadTrack = attemptRequest.bind(null, FETCH_TRACK, apiGet, api.tracks('byName'))
+export const loadTrackById = attemptRequest.bind(null, FETCH_TRACK_BY_ID, apiGet, api.tracks('byId'))
 
 export function* loadArtistInfo (key, artist) {
   try {
@@ -48,6 +52,33 @@ export function* saveTrackSuggestion ({payload}) {
     yield put(fetchFail(key, error))
   }
 }
+
+function subscribe () {
+  return eventChannel(emit => selectionsAPI.on('value', snapshot => emit(snapshot.val() || {})))
+}
+
+export function* watchSuggestionsList () {
+  const key = 'suggestionsList'
+  const channel = yield call(subscribe)
+  while (true) {
+    let list = yield take(channel)
+    const mapMbids = map((key) => list[key].mbid)
+    const mbidList = compose(mapMbids, keys)(list)
+    if (mbidList && !isEmpty(mbidList)) {
+      try {
+        const tracks = yield map(mbid => call(apiGet, api.tracks('byId', {mbid})), mbidList)
+        yield put(fetchSuccess(key, {tracks: normalizeTracks(tracks)}))
+        return tracks
+      } catch (error) {
+        yield put(fetchFail(key, error))
+        return error
+      }
+    }
+  }
+}
+
+
+
 
 
 

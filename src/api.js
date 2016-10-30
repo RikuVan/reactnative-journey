@@ -8,7 +8,8 @@ const replaceSpaces = compose(join('+'), split(' '))
 
 const queryMap = {
   top: () => 'chart.gettoptracks',
-  searchByName: ({track, artist}) => artist ? `track.search&track=${track}&artist=${artist}` : `track.search&track=${track}`,
+  byName: ({track, artist}) => artist ? `track.search&track=${track}&artist=${artist}` : `track.search&track=${track}`,
+  byId: ({track, mbid}) => `track.getInfo&mbid=${mbid}`,
   artist: ({artist}) => `artist.getinfo&artist=${artist}`,
   similar: ({artist, track}) => `track.getsimilar&artist=${replaceSpaces(artist)}&track=${replaceSpaces(track)}`
 }

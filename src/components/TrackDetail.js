@@ -29,6 +29,7 @@ class TrackDetail extends Component {
       thumbnailText,
       artistName
     } = styles
+    console.log(this.props)
     return (
       <TouchableWithoutFeedback
         onPress={() => toggleSelection(track.name, track.artist.name)}
