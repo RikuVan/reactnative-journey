@@ -27,7 +27,7 @@ const addTabs = El => {
         <View style={{flex: 1}}>
           <El {...this.props} />
           <Tabs selected={this.props.sceneKey} style={styles.tabs}
-            selectedStyle={{color:'#FF2851', fontWeight: 'bold'}}
+            selectedStyle={{color:'#000', fontWeight: 'bold'}}
             selectedIconStyle={{borderTopWidth:3, borderTopColor:'#FF2851'}}
             onSelect={el => this.handleRouting(el)}>
             <Text name='trackList' style={styles.text}>Top tracks</Text>

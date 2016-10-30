@@ -14,13 +14,15 @@ const RouterComponent = props => {
     <Router sceneStyle={{paddingTop: 65}}>
       <Scene
         key='auth'
-        navigationBarStyle={{backgroundColor: '#FF5E3A'}}
+        navigationBarStyle={{backgroundColor: '#FF9500'}}
+        titleStyle={{color: 'white', fontWeight: 'bold'}}
       >
         <Scene key='login' component={LoginForm} title="Julia's Tracks" />
       </Scene>
       <Scene
         key='main'
         navigationBarStyle={{backgroundColor: '#FF9500'}}
+        titleStyle={{color: 'white', fontWeight: 'bold'}}
         backButtonTextStyle={{color: 'white'}}
         backTitle='Back'
         rightTitle='Logout'

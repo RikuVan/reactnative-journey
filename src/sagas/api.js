@@ -15,6 +15,7 @@ import {
 import {SELECT_TRACK} from '../actions/selection'
 import {getSelectionById} from '../selectors/selection'
 import {getArtistKey, getTrackKey} from './helpers'
+import Reactotron from 'reactotron-react-native'
 
 const beginAPiActionsWithKeys = [AUTHORIZE_USER, LOGIN_USER, FETCH_TOP_TRACKS, FETCH_TRACK]
 const completionApiActionsWithKeys = [FETCH_SUCCESS, FETCH_FAIL, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE]
@@ -22,6 +23,10 @@ const completionApiActionsWithKeys = [FETCH_SUCCESS, FETCH_FAIL, LOGIN_USER_SUCC
 export function* watchLoading () {
   while (true) {
     const action = yield take('*')
+    yield Reactotron.display({
+      name: `ACTION: ${action.type}`,
+      value: action
+    })
     if (beginAPiActionsWithKeys.includes(action.type)) {
       yield put(beginAction(action.key || action.payload.key))
     }
