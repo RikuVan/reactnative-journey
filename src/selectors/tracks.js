@@ -4,7 +4,7 @@ const tracksPath = ['api', 'topTracks', 'data', 'tracks', 'track']
 const trackSuggestionPath = ['form', 'trackSuggestion', 'values']
 export const getTracks = pathOr([], tracksPath)
 export const getSuggestedTracks = pathOr([], ['api', 'suggestionsList', 'data', 'tracks'])
-export const getSimilarTracks = trackId => pathOr(null, ['api', `${trackId}_similar`, 'data', 'similartracks'])
+export const getSimilarTracks = trackId => pathOr([], ['api', `${trackId}_similar`, 'data', 'similartracks', 'track'])
 export const getArtistInfo = artistId => pathOr(null, ['api', `${artistId}_info`, 'data', 'artist'])
 export const getTrackMatches = pathOr(null, ['api', 'searchForTrack', 'data', 'results', 'trackmatches', 'track'])
 export const getTrackName = pathOr('', trackSuggestionPath.concat('track'))

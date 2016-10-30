@@ -3,10 +3,10 @@ import {reduxForm, Field} from 'redux-form'
 import {Text} from 'react-native'
 import {connect} from 'react-redux'
 import {loginUser} from '../actions/auth'
-import {Card, Button, CardSection, LabeledInput, Spinner} from './common'
-import {getEmail, getPassword, getValidity} from '../selectors/form'
+import {Card, PrimaryButton, CardSection, LabeledInput, Spinner} from './common'
+import {getEmail, getPassword} from '../selectors/form'
 import {getUserLoggingIn, getUserLoginError} from '../selectors/auth'
-import {getUserError} from '../selectors/api'
+import LinearGradient from 'react-native-linear-gradient'
 import {isEmpty} from 'ramda'
 
 const validate = values => {
@@ -36,34 +36,36 @@ class LoginForm extends Component {
   render () {
     const {loadingUser, error, invalid, email, password} = this.props
     return (
-      <Card>
-        <CardSection>
-          <Field component={LabeledInput}
-            name="email"
-            label='email'
-            placeholder='john.doe@mail.com'
-          />
-        </CardSection>
-        <CardSection>
-          <Field component={LabeledInput}
-            name="password"
-            label='password'
-            placeholder='password'
-            disguise
-          />
-        </CardSection>
-        <CardSection>
-          {!loadingUser
-          ? <Button handlePress={() => this.onSubmit(email, password)} disabled={invalid}>
-            <Text>Login</Text>
-          </Button>
-          : <Spinner size='small' />}
-        </CardSection>
-        {error &&
-        <Text style={styles.errorText}>
-          {error}
-        </Text>}
-      </Card>
+      <LinearGradient colors={['#FF9500', '#FF5E3A']} style={{flex: 1}}>
+        <Card>
+          <CardSection>
+            <Field component={LabeledInput}
+              name="email"
+              label='email'
+              placeholder='john.doe@mail.com'
+            />
+          </CardSection>
+          <CardSection>
+            <Field component={LabeledInput}
+              name="password"
+              label='password'
+              placeholder='password'
+              disguise
+            />
+          </CardSection>
+          <CardSection>
+            {!loadingUser
+            ? <PrimaryButton handlePress={() => this.onSubmit(email, password)} disabled={invalid}>
+              <Text>Login</Text>
+            </PrimaryButton>
+            : <Spinner size='small' />}
+          </CardSection>
+          {error &&
+          <Text style={styles.errorText}>
+            {error}
+          </Text>}
+        </Card>
+    </LinearGradient>
     )
   }
 }

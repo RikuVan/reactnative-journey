@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {reduxForm, Field} from 'redux-form'
 import {Text, View, Picker} from 'react-native'
 import {getSingleTrackByTitle, sendTrackWithComment} from '../actions/tracks'
-import {Card, Button, CardSection, LabeledInput, Spinner} from './common'
+import {Card, PrimaryButton, CardSection, LabeledInput, Spinner} from './common'
 import {
   getTrackName,
   getTrackMatches,
@@ -58,9 +58,9 @@ class TrackSuggestionForm extends Component {
               />
             </CardSection>
             <CardSection>
-              <Button handlePress={() => this.onSubmit()}>
+              <PrimaryButton handlePress={() => this.onSubmit()}>
                 <Text>Suggest</Text>
-              </Button>
+              </PrimaryButton>
             </CardSection>
         </View>}
         {trackMatches &&
@@ -79,9 +79,9 @@ class TrackSuggestionForm extends Component {
                 />
               </CardSection>
               <CardSection>
-                <Button handlePress={() => this.onSaveSuggestion()}>
+                <PrimaryButton handlePress={() => this.onSaveSuggestion()}>
                   <Text>Save Suggestion</Text>
-                </Button>
+                </PrimaryButton>
               </CardSection>
             </Card>
           </View>}

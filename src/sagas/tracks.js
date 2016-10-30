@@ -2,6 +2,7 @@ import {
   fetchFail,
   fetchSuccess
 } from '../actions/api'
+import {Actions} from 'react-native-router-flux'
 import {FETCH_TOP_TRACKS, FETCH_TRACK, FETCH_TRACK_BY_ID} from '../actions/tracks'
 import {call, put, take} from 'redux-saga/effects'
 import {api, apiGet, selectionsAPI} from '../api'
@@ -48,6 +49,7 @@ export function* saveTrackSuggestion ({payload}) {
   try {
     const saved = yield call([selectionsAPI, selectionsAPI.push], {mbid, comment, suggestedBy})
     yield put(fetchSuccess(key, saved.data))
+    yield call([Actions, Actions.suggestionsList])
   } catch (error) {
     yield put(fetchFail(key, error))
   }

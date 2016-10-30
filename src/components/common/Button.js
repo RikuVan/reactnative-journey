@@ -1,22 +1,25 @@
 import React, {PropTypes} from 'react'
-import {Text, TouchableOpacity} from 'react-native'
+import {Text} from 'react-native'
+import Button from 'apsl-react-native-button'
 
-export const Button = ({handlePress, children, size, disabled}) => {
-  const {button, btnActive, btnDisabled, btnText, smallBtnText} = styles
+export const PrimaryButton = ({handlePress, children, size, disabled}) => {
+  const {button, btnDisabled, btnText, smallBtnText} = styles
   return (
-    <TouchableOpacity
-      activeOpacity={disabled ? 1 : 0.7}
-      onPress={!disabled && handlePress}
-      style={[button, disabled ? btnDisabled : btnActive]}
+    <Button
+      onPress={handlePress}
+      isDisabled={disabled}
+      disabledStyle={btnDisabled}
+      style={button}
+      activeOpacity={0.7}
     >
       <Text style={size === 'small' ? smallBtnText : btnText}>
         {children}
       </Text>
-    </TouchableOpacity>
+    </Button>
   )
 }
 
-Button.propTypes = {
+PrimaryButton.propTypes = {
   handlePress: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
   size: PropTypes.string,
@@ -27,24 +30,20 @@ const styles = {
   button: {
     flex: 1,
     alignSelf: 'stretch',
-    backgroundColor: '#fff',
-    borderRadius: 1,
+    backgroundColor: '#FF9500',
+    borderRadius: 3,
     borderWidth: 2,
-    borderColor: '#007aff'
+    borderColor: '#FF5E3A'
   },
   btnDisabled: {
-    backgroundColor: '#E9EDF0',
-    borderColor: '#B3B7BA'
-  },
-  btnActive: {
-    borderColor: '#007aff',
-    backgroundColor: '#fff'
+    backgroundColor: 'white',
+    borderColor: '#FF9500'
   },
   btnText: {
     alignSelf: 'center',
     fontWeight: '600',
     fontSize: 16,
-    color: '#007aff',
+    color: 'black',
     paddingBottom: 10,
     paddingTop: 10
   },

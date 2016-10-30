@@ -45,7 +45,6 @@ class AlbumList extends Component {
   }
 
   render () {
-    console.log("main props", this.props)
     if (this.props.loading) return <Spinner />
     return (
       <ListView
@@ -64,12 +63,10 @@ AlbumList.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log("ROUTE", getRoute(ownProps), getTracks(state), state.api.loading.topTracks)
   const isTrackList = getRoute(ownProps) === 'trackList'
   return {
     loading: isTrackList ? state.api.loading.topTracks : state.api.loading.suggestionsList,
-    tracks: isTrackList ? getTracks(state) : getSuggestedTracks(state),
-    ...state
+    tracks: isTrackList ? getTracks(state) : getSuggestedTracks(state)
   }
 }
 
